@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="#FAF3E0">
+
+    <!-- App Title -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hangman Game"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        android:textColor="#333333" />
+
+    <!-- Start Timed Mode Button -->
+    <Button
+        android:id="@+id/btnTimedMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Timed Mode"
+        android:textSize="18sp"
+        android:backgroundTint="#FF6F61"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp"
+        android:onClick="startTimedMode" />
+
+    <!-- Start Non-Timed Mode Button -->
+    <Button
+        android:id="@+id/btnNonTimedMode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Non-Timed Mode"
+        android:textSize="18sp"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp"
+        android:onClick="startNonTimedMode" />
+
+    <!-- View Scores Button -->
+    <Button
+        android:id="@+id/btnViewScores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Scores"
+        android:textSize="18sp"
+        android:backgroundTint="#03A9F4"
+        android:textColor="#FFFFFF"
+        android:onClick="viewScores" />
+</LinearLayout>
