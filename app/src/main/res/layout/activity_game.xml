@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#EDEDED"
+    android:gravity="center_horizontal">
+
+    <!-- Word Display -->
+    <TextView
+        android:id="@+id/wordView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="_ _ _ _ _ _ _"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Timer (Visible in Timed Mode Only) -->
+    <TextView
+        android:id="@+id/timerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time: 30s"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#FF0000"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Score Display -->
+    <TextView
+        android:id="@+id/scoreView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score: 0"
+        android:textSize="18sp"
+        android:textColor="#4CAF50"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Letter Input -->
+    <EditText
+        android:id="@+id/inputLetter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter a letter"
+        android:inputType="text"
+        android:maxLines="1"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/edit_text" />
+
+    <!-- Guess Button -->
+    <Button
+        android:id="@+id/btnGuess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guess"
+        android:backgroundTint="#FF6F61"
+        android:textColor="#FFFFFF"
+        android:onClick="checkGuess" />
+
+</LinearLayout>
