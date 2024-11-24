@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,10 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
-    private TextView wordView, timerView, scoreView;
+    private TextView wordView, timerView, scoreView, guessedLettersView;
     private EditText inputLetter;
     private Button btnGuess;
 
@@ -25,6 +27,7 @@ public class GameActivity extends AppCompatActivity {
     private int timerDuration = 30000; // 30 seconds
     private CountDownTimer timer;
     private ArrayList<String> wordList;
+    private HashSet<Character> guessedLetters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +38,16 @@ public class GameActivity extends AppCompatActivity {
         wordView = findViewById(R.id.wordView);
         timerView = findViewById(R.id.timerView);
         scoreView = findViewById(R.id.scoreView);
+        guessedLettersView = findViewById(R.id.guessedLettersView);
         inputLetter = findViewById(R.id.inputLetter);
         btnGuess = findViewById(R.id.btnGuess);
 
         // Determine game mode
         isTimed = getIntent().getBooleanExtra("isTimed", false);
 
-        // Initialize word list
+        // Initialize word list and guessed letters
         initializeWordList();
+        guessedLetters = new HashSet<>();
         startNewGame();
 
         // Timer setup
@@ -73,11 +78,17 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < displayedWord.length; i++) {
             displayedWord[i] = '_'; // Initialize with underscores
         }
+        guessedLetters.clear(); // Clear guessed letters for the new game
         updateDisplayedWord();
+        updateGuessedLetters();
     }
 
     private void updateDisplayedWord() {
         wordView.setText(new String(displayedWord));
+    }
+
+    private void updateGuessedLetters() {
+        guessedLettersView.setText("Guessed: " + guessedLetters.toString());
     }
 
     private void processGuess() {
@@ -90,6 +101,12 @@ public class GameActivity extends AppCompatActivity {
         }
 
         char guessedLetter = guess.charAt(0);
+        if (guessedLetters.contains(guessedLetter)) {
+            Toast.makeText(this, "You already guessed that letter", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        guessedLetters.add(guessedLetter);
         boolean correct = false;
 
         // Check if the guessed letter is in the word
@@ -113,6 +130,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         scoreView.setText("Score: " + score);
+        updateGuessedLetters();
     }
 
     private void startTimer() {
