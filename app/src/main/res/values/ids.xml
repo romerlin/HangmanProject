@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="coinView" type="id" />
+    <item name="ticketView" type="id" />
+    <item name="btnShakeEgg" type="id" />
+    <item name="btnHint" type="id" />
+    <item name="coinBalanceView" type="id" />
+    <item name="ticketBalanceView" type="id" />
+    <item name="eggImageView" type="id" />
+</resources>

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">hangman</string>
+    <string name="guess">Guess</string>
+    <string name="back_to_main" />
 </resources>

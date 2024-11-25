@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hangman">
 
-    <!-- Permissions (if needed in the future) -->
+    <!-- Permissions (add if required in your app, otherwise remove) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -14,8 +14,9 @@
         android:theme="@style/Theme.Hangman">
 
         <!-- Main activity (entry point of the app) -->
-        <activity android:name=".MainActivity"
-            android:exported="true"> <!-- This line is the fix -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"> <!-- Required for activities with intent filters -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,13 +24,19 @@
         </activity>
 
         <!-- Game activity (handles the gameplay) -->
-        <activity android:name=".GameActivity"
-            android:exported="false" /> <!-- Not exported, only accessed within the app -->
+        <activity
+            android:name=".GameActivity"
+            android:exported="false" /> <!-- Internal activity -->
 
         <!-- Score activity (displays the user's score) -->
-        <activity android:name=".ScoreActivity"
-            android:exported="false" /> <!-- Not exported, only accessed within the app -->
+        <activity
+            android:name=".ScoreActivity"
+            android:exported="false" /> <!-- Internal activity -->
+
+        <!-- Shake Egg activity -->
+        <activity
+            android:name=".ShakeEggActivity"
+            android:exported="false" /> <!-- Internal activity -->
 
     </application>
-
 </manifest>

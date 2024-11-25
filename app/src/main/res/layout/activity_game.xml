@@ -7,6 +7,17 @@
     android:background="#EDEDED"
     android:gravity="center_horizontal">
 
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/btnBackToMain"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/arrow_back"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back_to_main"
+        android:layout_gravity="start"
+        android:layout_marginBottom="16dp" />
+
     <!-- Word Display -->
     <TextView
         android:id="@+id/wordView"
@@ -39,6 +50,26 @@
         android:textColor="#4CAF50"
         android:layout_marginBottom="8dp" />
 
+    <!-- Coins Display -->
+    <TextView
+        android:id="@+id/coinView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coins: 0"
+        android:textSize="18sp"
+        android:textColor="#FF9800"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Tickets Display -->
+    <TextView
+        android:id="@+id/ticketView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tickets: 3"
+        android:textSize="18sp"
+        android:textColor="#673AB7"
+        android:layout_marginBottom="16dp" />
+
     <!-- Guessed Letters -->
     <TextView
         android:id="@+id/guessedLettersView"
@@ -65,8 +96,20 @@
         android:id="@+id/btnGuess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Guess"
+        android:text="@string/guess"
         android:backgroundTint="#FF6F61"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Hint Button -->
+    <Button
+        android:id="@+id/btnHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Hint"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp" />
+
 
 </LinearLayout>
