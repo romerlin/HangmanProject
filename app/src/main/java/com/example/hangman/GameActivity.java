@@ -13,9 +13,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GameActivity extends AppCompatActivity {
     private TextView wordView, timerView, scoreView, guessedLettersView, coinView, ticketView;
@@ -125,13 +129,33 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initializeWordList() {
-        wordList = new ArrayList<>();
-        wordList.add("APPLE");
-        wordList.add("BANANA");
-        wordList.add("ORANGE");
-        wordList.add("CHERRY");
-        wordList.add("GRAPE");
+        wordList = new ArrayList<>(); // Initialize the word list
+        try {
+            // Open the text file from res/raw
+            InputStream inputStream = getResources().openRawResource(R.raw.wordlist); // File name without extension
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                wordList.add(line.trim().toUpperCase()); // Add each word, converting to uppercase
+            }
+
+            reader.close(); // Close the reader
+            inputStream.close(); // Close the InputStream
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error loading word list!", Toast.LENGTH_SHORT).show();
+        }
+
+        if (wordList.isEmpty()) {
+            // Handle case where the word list is empty
+            Toast.makeText(this, "Word list is empty. Please check your file.", Toast.LENGTH_LONG).show();
+            finish(); // Exit the activity
+        }
     }
+
+
+
 
     private void updateUI() {
         wordView.setText(new String(displayedWord));
@@ -168,6 +192,7 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
+        updateDisplayedWord();
         updateUI();
 
         if (correct) {
@@ -183,15 +208,35 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void startNewGame() {
+        // Pick a random word
         Random random = new Random();
         wordToGuess = wordList.get(random.nextInt(wordList.size()));
         displayedWord = new char[wordToGuess.length()];
         for (int i = 0; i < displayedWord.length; i++) {
-            displayedWord[i] = '_';
+            displayedWord[i] = '_'; // Initialize with underscores
         }
-        guessedLetters.clear();
-        updateUI();
+        guessedLetters.clear(); // Clear guessed letters for the new game
+
+        // Update the displayed word and guessed letters
+        updateDisplayedWord();
+        updateGuessedLetters();
     }
+
+    private void updateGuessedLetters() {
+        guessedLettersView.setText("Guessed: " + guessedLetters.toString());
+    }
+
+
+    private void updateDisplayedWord() {
+        StringBuilder formattedWord = new StringBuilder();
+        for (char letter : displayedWord) {
+            formattedWord.append(letter).append(" "); // Add a space after each character
+        }
+        wordView.setText(formattedWord.toString().trim()); // Set the formatted string and remove the trailing space
+    }
+
+
+
 
 
     private void useHint() {
