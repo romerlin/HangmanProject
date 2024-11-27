@@ -76,7 +76,6 @@ public class GameActivity extends AppCompatActivity {
             timerView.setVisibility(View.GONE); // Hide timer in non-timed mode
         }
 
-
         // Initialize word list and guessed letters
         initializeWordList();
         guessedLetters = new HashSet<>();
@@ -104,7 +103,7 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                endGame();
+                endGame(); // Trigger end game when timer finishes
             }
         };
 
@@ -116,17 +115,14 @@ public class GameActivity extends AppCompatActivity {
             timer.cancel();
         }
 
-        // Save the score in SharedPreferences
+        showResultDialog(false); // Time's up dialog
         SharedPreferences prefs = getSharedPreferences("HangmanScores", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("lastScore", score);
         editor.apply();
-
-        // Go to the ScoreActivity
-        Intent intent = new Intent(this, ScoreActivity.class);
-        startActivity(intent);
-        finish();
     }
+
+
 
     private void initializeWordList() {
         wordList = new ArrayList<>(); // Initialize the word list
@@ -154,9 +150,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     private void updateUI() {
         wordView.setText(new String(displayedWord));
         guessedLettersView.setText("Guessed: " + guessedLetters.toString());
@@ -171,6 +164,7 @@ public class GameActivity extends AppCompatActivity {
         String guess = inputLetter.getText().toString().toUpperCase();
         inputLetter.setText("");
 
+        // Check if input is valid
         if (guess.isEmpty() || guess.length() != 1) {
             Toast.makeText(this, "Enter a single letter", Toast.LENGTH_SHORT).show();
             return;
@@ -185,6 +179,7 @@ public class GameActivity extends AppCompatActivity {
         guessedLetters.add(guessedLetter);
         boolean correct = false;
 
+        // Update displayed word if the guessed letter is correct
         for (int i = 0; i < wordToGuess.length(); i++) {
             if (wordToGuess.charAt(i) == guessedLetter) {
                 displayedWord[i] = guessedLetter;
@@ -192,20 +187,27 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
+        // Update displayed word UI
         updateDisplayedWord();
         updateUI();
 
-        if (correct) {
-            if (new String(displayedWord).equals(wordToGuess)) {
-                score++;
-                coins += 3; // เพิ่ม 3 coins ต่อการเดาถูกทั้งคำ
-                Toast.makeText(this, "You guessed the word!", Toast.LENGTH_SHORT).show();
-                startNewGame();
-            }
+        // If the guess is correct, check if the whole word is guessed
+        if (new String(displayedWord).equals(wordToGuess)) {
+            score++;
+            coins += 3; // Earn 3 coins for guessing the word
+            showResultDialog(true); // Show dialog for correct guess
+        } else if (!new String(displayedWord).contains("_")) {
+            // If the word is fully guessed and all underscores are replaced
+            score++;
+            coins += 3; // Earn 3 coins for guessing the word
+            showResultDialog(true); // Show dialog for correct guess
         } else {
-            Toast.makeText(this, "Incorrect guess!", Toast.LENGTH_SHORT).show();
+            if (!correct) {
+                Toast.makeText(this, "Incorrect guess!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
 
     private void startNewGame() {
         // Pick a random word
@@ -217,15 +219,13 @@ public class GameActivity extends AppCompatActivity {
         }
         guessedLetters.clear(); // Clear guessed letters for the new game
 
-        // Update the displayed word and guessed letters
-        updateDisplayedWord();
+        updateDisplayedWord(); // Ensure the displayed word is updated
         updateGuessedLetters();
     }
 
     private void updateGuessedLetters() {
         guessedLettersView.setText("Guessed: " + guessedLetters.toString());
     }
-
 
     private void updateDisplayedWord() {
         StringBuilder formattedWord = new StringBuilder();
@@ -234,10 +234,6 @@ public class GameActivity extends AppCompatActivity {
         }
         wordView.setText(formattedWord.toString().trim()); // Set the formatted string and remove the trailing space
     }
-
-
-
-
 
     private void useHint() {
         if (tickets <= 0) {
@@ -255,5 +251,18 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    private void showResultDialog(boolean isCorrect) {
+        String message = isCorrect
+                ? "Congratulations! You guessed the word: " + wordToGuess
+                : "Time's up! The correct word was: " + wordToGuess;
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(isCorrect ? "You Won!" : "Game Over")
+                .setMessage(message)
+                .setPositiveButton("Next Word", (dialog, which) -> startNewGame()) // Start a new game
+                .setNegativeButton("Exit", (dialog, which) -> finish()) // Exit the activity
+                .setCancelable(false) // Prevent dismissing by tapping outside
+                .show();
+    }
 
 }
