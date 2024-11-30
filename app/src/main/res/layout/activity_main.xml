@@ -13,24 +13,26 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hangman Game"
-        android:textSize="28sp"
+        android:text="Word Game"
+        android:textSize="50sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="16dp"
         android:textColor="#333333" />
 
     <!-- Hangman Image -->
-    <ImageView
-        android:id="@+id/imgHangman"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/hangman"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="Hangman Image"
-        android:scaleType="centerCrop" />
 
     <!-- Buttons Layout -->
+
+    <ImageView
+        android:id="@+id/imgHangman"
+        android:layout_width="210dp"
+        android:layout_height="189dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="Word Image"
+        android:scaleType="centerCrop"
+        android:src="@drawable/word" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
