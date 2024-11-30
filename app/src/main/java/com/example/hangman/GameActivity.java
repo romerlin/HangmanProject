@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +33,7 @@ public class GameActivity extends AppCompatActivity {
     private int coins = 0;
     private int tickets = 0;
     private boolean isTimed;
-    private int timerDuration = 30000; // 30 seconds
+    private int timerDuration = 60000; // 30 seconds
     private CountDownTimer timer;
     private ArrayList<String> wordList;
     private HashSet<Character> guessedLetters;
@@ -62,6 +63,9 @@ public class GameActivity extends AppCompatActivity {
         btnGuess = findViewById(R.id.btnGuess);
         btnHint = findViewById(R.id.btnHint);
 
+        // Set InputFilter for inputLetter to restrict input to 1 character
+        inputLetter.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+
         // Button listeners
         btnGuess.setOnClickListener(v -> processGuess());
         btnHint.setOnClickListener(v -> useHint());
@@ -89,6 +93,7 @@ public class GameActivity extends AppCompatActivity {
             finish();
         });
     }
+
 
     private void startTimer() {
         if (timer != null) {
