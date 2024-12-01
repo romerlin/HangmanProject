@@ -235,15 +235,15 @@ public class GameActivity extends AppCompatActivity {
     private void updateDisplayedWord() {
         StringBuilder formattedWord = new StringBuilder();
         for (char letter : displayedWord) {
-            // Add an underscore or the guessed letter, followed by a space
             if (letter == '_') {
-                formattedWord.append("_ ");
+                formattedWord.append("_ "); // เพิ่ม underscore พร้อมช่องว่าง
             } else {
-                formattedWord.append(letter).append(" ");
+                formattedWord.append(letter).append(" "); // เพิ่มตัวอักษรพร้อมช่องว่าง
             }
         }
-        wordView.setText(formattedWord.toString().trim()); // Set the formatted string and remove trailing space
+        wordView.setText(formattedWord.toString().trim()); // ลบช่องว่างท้ายคำ
     }
+
 
 
 
