@@ -7,6 +7,8 @@ public class GameDataManager {
     private static final String PREFS_NAME = "GameData";
     private static final String KEY_COINS = "coins";
     private static final String KEY_TICKETS = "tickets";
+    private static final String LASTEST_SCORE = "lastscore";
+
 
     private SharedPreferences sharedPreferences;
 
@@ -20,6 +22,10 @@ public class GameDataManager {
 
     public int getTickets() {
         return sharedPreferences.getInt(KEY_TICKETS, 0);
+    }
+
+    public int getHighScore() {
+        return sharedPreferences.getInt(LASTEST_SCORE, 0);
     }
 
     public void setCoins(int coins) {
@@ -40,4 +46,12 @@ public class GameDataManager {
         editor.putInt(KEY_TICKETS, tickets);
         editor.apply();
     }
+
+    // Setter for high score
+    public void setHighScore(int highScore) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(LASTEST_SCORE, highScore);
+        editor.apply();
+    }
+
 }

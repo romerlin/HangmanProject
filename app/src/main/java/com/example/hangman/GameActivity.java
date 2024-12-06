@@ -1,7 +1,6 @@
 package com.example.hangman;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.InputFilter;
@@ -52,6 +51,8 @@ public class GameActivity extends AppCompatActivity {
         // Load saved values
         coins = gameDataManager.getCoins();
         tickets = gameDataManager.getTickets();
+
+        gameDataManager.setHighScore(0);
 
         // Initialize UI elements
         wordView = findViewById(R.id.wordView);
@@ -155,10 +156,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         showResultDialog(false); // Time's up dialog
-        SharedPreferences prefs = getSharedPreferences("HangmanScores", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("lastScore", score);
-        editor.apply();
+        gameDataManager.setHighScore(score);
     }
 
 
@@ -167,7 +165,7 @@ public class GameActivity extends AppCompatActivity {
         wordList = new ArrayList<>(); // Initialize the word list
         try {
             // Open the text file from res/raw
-            InputStream inputStream = getResources().openRawResource(R.raw.wordlist); // File name without extension
+            InputStream inputStream = getResources().openRawResource(R.raw.wordtest); // File name without extension
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
@@ -310,9 +308,13 @@ public class GameActivity extends AppCompatActivity {
                 .setTitle(isCorrect ? "You Won!" : "Game Over")
                 .setMessage(message)
                 .setPositiveButton("Next Word", (dialog, which) -> startNewGame()) // Start a new game
-                .setNegativeButton("Exit", (dialog, which) -> finish()) // Exit the activity
+                .setNegativeButton("Exit", (dialog, which) -> {
+                    gameDataManager.setHighScore(score); // update score
+                    finish(); // Exit the activity
+                }) // Exit the activity
                 .setCancelable(false) // Prevent dismissing by tapping outside
                 .show();
     }
+
 
 }
