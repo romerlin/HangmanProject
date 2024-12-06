@@ -34,6 +34,7 @@ public class GameActivity extends AppCompatActivity {
     private int tickets = 0;
     private boolean isTimed;
     private int timerDuration = 60000; // 30 seconds
+    private int remainingTime = timerDuration; // Initially set to full duration
     private CountDownTimer timer;
     private ArrayList<String> wordList;
     private HashSet<Character> guessedLetters;
@@ -73,6 +74,7 @@ public class GameActivity extends AppCompatActivity {
         // Determine game mode
         isTimed = getIntent().getBooleanExtra("isTimed", false);
 
+
         // Timer setup
         if (isTimed) {
             startTimer();
@@ -94,6 +96,33 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isTimed && timer != null) {
+            timer.cancel(); // Pause the timer
+            timerDuration = remainingTime; // Save the remaining time
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (!hasFocus) {
+            timer.cancel(); // Pause the timer
+            timerDuration = remainingTime;
+        } else {
+            startTimer();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isTimed) {
+            startTimer(); // Resume the timer with the remaining time
+        }
+    }
 
     private void startTimer() {
         if (timer != null) {
@@ -103,6 +132,7 @@ public class GameActivity extends AppCompatActivity {
         timer = new CountDownTimer(timerDuration, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                remainingTime = (int) millisUntilFinished; // Save remaining time
                 timerView.setText("Time: " + millisUntilFinished / 1000 + "s");
             }
 
