@@ -87,6 +87,8 @@ public class GameActivity extends AppCompatActivity {
         guessedLetters = new HashSet<>();
         startNewGame();
 
+        updateUI();
+
         // Back to Main Button
         ImageButton btnBackToMain = findViewById(R.id.btnBackToMain);
         btnBackToMain.setOnClickListener(v -> {
@@ -108,11 +110,13 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (!hasFocus) {
-            timer.cancel(); // Pause the timer
-            timerDuration = remainingTime;
-        } else {
-            startTimer();
+        if(isTimed) {
+            if (!hasFocus) {
+                timer.cancel(); // Pause the timer
+                timerDuration = remainingTime;
+            } else {
+                startTimer();
+            }
         }
     }
 
@@ -230,11 +234,13 @@ public class GameActivity extends AppCompatActivity {
         if (new String(displayedWord).equals(wordToGuess)) {
             score++;
             coins += 3; // Earn 3 coins for guessing the word
+            updateUI();
             showResultDialog(true); // Show dialog for correct guess
         } else if (!new String(displayedWord).contains("_")) {
             // If the word is fully guessed and all underscores are replaced
             score++;
             coins += 3; // Earn 3 coins for guessing the word
+            updateUI();
             showResultDialog(true); // Show dialog for correct guess
         } else {
             if (!correct) {

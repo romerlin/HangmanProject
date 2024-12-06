@@ -67,10 +67,10 @@
         android:id="@+id/ticketView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tickets: 3"
-        android:textSize="18sp"
+        android:layout_marginBottom="16dp"
+        android:text="Tickets: 0"
         android:textColor="#673AB7"
-        android:layout_marginBottom="16dp" />
+        android:textSize="18sp" />
 
     <!-- Guessed Letters -->
     <TextView
