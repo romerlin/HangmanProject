@@ -93,9 +93,13 @@ public class GameActivity extends AppCompatActivity {
         // Back to Main Button
         ImageButton btnBackToMain = findViewById(R.id.btnBackToMain);
         btnBackToMain.setOnClickListener(v -> {
-            Intent intent = new Intent(GameActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Are you sure to exit?")
+                .setMessage("Exit now will lose your progress")
+                .setNegativeButton("Yes", (dialog, which) -> finish()) // Finish the activity
+                .setPositiveButton("No", (dialog, which) -> dialog.dismiss()) // Dismiss the dialog
+                .setCancelable(false) // Prevent dismissing by tapping outside
+                .show();
         });
     }
 

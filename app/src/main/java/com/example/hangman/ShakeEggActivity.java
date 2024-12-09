@@ -43,7 +43,15 @@ public class ShakeEggActivity extends AppCompatActivity implements SensorEventLi
         updateUI();
 
         ImageButton btnBackToMain = findViewById(R.id.btnBackToMain);
-        btnBackToMain.setOnClickListener(v -> finish());
+        btnBackToMain.setOnClickListener(v -> {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Are you sure to exit?")
+                    .setNegativeButton("Yes", (dialog, which) -> finish()) // Finish the activity
+                    .setPositiveButton("No", (dialog, which) -> dialog.dismiss()) // Dismiss the dialog
+                    .setCancelable(false) // Prevent dismissing by tapping outside
+                    .show();
+        });
+
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
