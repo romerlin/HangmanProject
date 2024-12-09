@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,12 +22,18 @@ import java.util.Random;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.lang.reflect.Field; // For reflection to access raw resource fields
+import java.util.ArrayList;     // For creating and managing dynamic lists
+import java.util.List;          // For working with lists
+import java.util.Random;        // For selecting a random resource
+
 public class GameActivity extends AppCompatActivity {
-    private TextView wordView, timerView, scoreView, guessedLettersView, coinView, ticketView;
+    private TextView wordView, timerView, scoreView, guessedLettersView, coinView, ticketView, category;
     private EditText inputLetter;
     private Button btnGuess, btnHint;
 
     private String wordToGuess;
+    private String filename;
     private char[] displayedWord;
     private int score = 0;
     private int coins = 0;
@@ -37,6 +44,7 @@ public class GameActivity extends AppCompatActivity {
     private CountDownTimer timer;
     private ArrayList<String> wordList;
     private HashSet<Character> guessedLetters;
+
 
     private GameDataManager gameDataManager;
 
@@ -65,6 +73,8 @@ public class GameActivity extends AppCompatActivity {
         btnGuess = findViewById(R.id.btnGuess);
         btnHint = findViewById(R.id.btnHint);
 
+        category = findViewById(R.id.word_category);
+
         // Set InputFilter for inputLetter to restrict input to 1 character
         inputLetter.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
 
@@ -84,8 +94,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // Initialize word list and guessed letters
-        initializeWordList();
-        guessedLetters = new HashSet<>();
+
         startNewGame();
 
         updateUI();
@@ -168,8 +177,26 @@ public class GameActivity extends AppCompatActivity {
     private void initializeWordList() {
         wordList = new ArrayList<>(); // Initialize the word list
         try {
+
+            Field[] fields = R.raw.class.getFields();
+            List<Integer> rawFileIds = new ArrayList<>();
+            for (Field field : fields) {
+                try {
+                    rawFileIds.add(field.getInt(null));
+                } catch (Exception e) {
+                    Log.e("LoadRandomRawFileError", "Error occurred while loading a random raw file", e);
+                }
+            }
+
+            // Convert List to Array
+            int[] rawFiles = rawFileIds.stream().mapToInt(i -> i).toArray();
+
+            int randomIndex = new Random().nextInt(rawFiles.length);
+            int selectedFile = rawFiles[randomIndex];
+            filename = getResources().getResourceEntryName(selectedFile);
+
             // Open the text file from res/raw
-            InputStream inputStream = getResources().openRawResource(R.raw.wordtest); // File name without extension
+            InputStream inputStream = getResources().openRawResource(selectedFile); // File name without extension
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
@@ -192,12 +219,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
+
         wordView.setText(new String(displayedWord));
         guessedLettersView.setText("Guessed: " + guessedLetters.toString());
         scoreView.setText("Score: " + score);
         coinView.setText("Coins: " + coins);
         ticketView.setText("Tickets: " + tickets);
-
+        category.setText(filename.toUpperCase());
         gameDataManager.updateCoinsAndTickets(coins, tickets);
     }
 
@@ -254,6 +282,10 @@ public class GameActivity extends AppCompatActivity {
 
     private void startNewGame() {
         // Pick a random word
+
+        initializeWordList();
+        guessedLetters = new HashSet<>();
+
         Random random = new Random();
         wordToGuess = wordList.get(random.nextInt(wordList.size()));
         displayedWord = new char[wordToGuess.length()];
