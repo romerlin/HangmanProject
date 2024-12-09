@@ -23,6 +23,7 @@
         android:id="@+id/word_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="30px"
         android:text="Category"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#192C4B" />

@@ -60,7 +60,6 @@ public class GameActivity extends AppCompatActivity {
         coins = gameDataManager.getCoins();
         tickets = gameDataManager.getTickets();
 
-        gameDataManager.setHighScore(0);
 
         // Initialize UI elements
         wordView = findViewById(R.id.wordView);
@@ -94,6 +93,8 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // Initialize word list and guessed letters
+
+
 
         startNewGame();
 
@@ -220,13 +221,14 @@ public class GameActivity extends AppCompatActivity {
 
     private void updateUI() {
 
+        gameDataManager.updateCoinsAndTickets(coins, tickets);
         wordView.setText(new String(displayedWord));
         guessedLettersView.setText("Guessed: " + guessedLetters.toString());
         scoreView.setText("Score: " + score);
         coinView.setText("Coins: " + coins);
         ticketView.setText("Tickets: " + tickets);
         category.setText(filename.toUpperCase());
-        gameDataManager.updateCoinsAndTickets(coins, tickets);
+
     }
 
     private void processGuess() {
@@ -289,9 +291,20 @@ public class GameActivity extends AppCompatActivity {
         Random random = new Random();
         wordToGuess = wordList.get(random.nextInt(wordList.size()));
         displayedWord = new char[wordToGuess.length()];
+
+        StringBuilder modifiedWordToGuess = new StringBuilder(wordToGuess);
+
         for (int i = 0; i < displayedWord.length; i++) {
-            displayedWord[i] = '_'; // Initialize with underscores
+            char currentChar = wordToGuess.charAt(i);
+            if (currentChar == ' ' || currentChar == '-') {
+                displayedWord[i] = ' '; // Preserve spaces and hyphens
+                modifiedWordToGuess.setCharAt(i, ' '); // Optional: Modify the original word
+            } else {
+                displayedWord[i] = '_'; // Replace other characters with underscores
+            }
         }
+        wordToGuess = modifiedWordToGuess.toString();
+
         guessedLetters.clear(); // Clear guessed letters for the new game
 
         updateDisplayedWord(); // Ensure the displayed word is updated
@@ -306,7 +319,7 @@ public class GameActivity extends AppCompatActivity {
         StringBuilder formattedWord = new StringBuilder();
         for (char letter : displayedWord) {
             if (letter == '_') {
-                formattedWord.append("_ "); // เพิ่ม underscore พร้อมช่องว่าง
+                formattedWord.append("_  "); // เพิ่ม underscore พร้อมช่องว่าง
             } else {
                 formattedWord.append(letter).append(" "); // เพิ่มตัวอักษรพร้อมช่องว่าง
             }
@@ -330,6 +343,12 @@ public class GameActivity extends AppCompatActivity {
                 displayedWord[i] = wordToGuess.charAt(i);
                 tickets--;
                 updateUI();
+                if (new String(displayedWord).equals(wordToGuess)) {
+                    score++;
+                    coins += 3; // Earn 3 coins for guessing the word
+                    updateUI();
+                    showResultDialog(true); // Show dialog for correct guess
+                }
                 return;
             }
         }
