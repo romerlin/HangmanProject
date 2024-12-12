@@ -43,13 +43,13 @@
             android:id="@+id/btnTimedMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Timed Mode"
-            android:textSize="18sp"
-            android:backgroundTint="#FF6F61"
-            android:textColor="#FFFFFF"
             android:layout_marginBottom="12dp"
+            android:backgroundTint="#FF6F61"
+            android:onClick="startTimedMode"
             android:padding="12dp"
-            android:onClick="startTimedMode" />
+            android:text="Timed Mode"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
         <!-- Start Non-Timed Mode Button -->
         <Button

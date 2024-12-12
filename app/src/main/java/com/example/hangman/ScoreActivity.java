@@ -24,15 +24,7 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     public void goBackToMainMenu(View view) {
-
-
-        new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Are you sure to exit")
-
-                .setNegativeButton("Yes", (dialog, which) -> finish()) // Start a new game
-                .setPositiveButton("No",(dialog, which) -> dialog.dismiss()) // Exit the activity
-                .setCancelable(false) // Prevent dismissing by tapping outside
-                .show();
+        finish();
     }
 
 }

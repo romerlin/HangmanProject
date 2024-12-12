@@ -27,11 +27,15 @@ import java.util.ArrayList;     // For creating and managing dynamic lists
 import java.util.List;          // For working with lists
 import java.util.Random;        // For selecting a random resource
 
+
+
+
 public class GameActivity extends AppCompatActivity {
     private TextView wordView, timerView, scoreView, guessedLettersView, coinView, ticketView, category;
     private EditText inputLetter;
     private Button btnGuess, btnHint;
-
+    private long backPressedTime;
+    private Toast backToast;
     private String wordToGuess;
     private String filename;
     private char[] displayedWord;
@@ -371,6 +375,19 @@ public class GameActivity extends AppCompatActivity {
                 }) // Exit the activity
                 .setCancelable(false) // Prevent dismissing by tapping outside
                 .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Are you sure to exit?")
+                    .setMessage("Exit now will lose your progress")
+                    .setNegativeButton("Yes", (dialog, which) -> super.onBackPressed()) // Finish the activity
+                    .setPositiveButton("No", (dialog, which) -> dialog.dismiss()) // Dismiss the dialog
+                    .setCancelable(false) // Prevent dismissing by tapping outside
+                    .show();
     }
 
 

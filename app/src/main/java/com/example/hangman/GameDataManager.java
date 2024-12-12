@@ -2,6 +2,7 @@ package com.example.hangman;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 public class GameDataManager {
     private static final String PREFS_NAME = "GameData";
@@ -53,5 +54,6 @@ public class GameDataManager {
         editor.putInt(LASTEST_SCORE, highScore);
         editor.apply();
     }
+
 
 }
