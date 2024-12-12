@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hangman">
 
     <!-- Permissions (add if required in your app, otherwise remove) -->
@@ -11,12 +12,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Hangman">
+        android:theme="@style/Theme.Hangman"
+
+        >
 
         <!-- Main activity (entry point of the app) -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"> <!-- Required for activities with intent filters -->
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:exported="true"
+            > <!-- Required for activities with intent filters -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,16 +32,22 @@
         <!-- Game activity (handles the gameplay) -->
         <activity
             android:name=".GameActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="false" /> <!-- Internal activity -->
 
         <!-- Score activity (displays the user's score) -->
         <activity
             android:name=".ScoreActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="false" /> <!-- Internal activity -->
 
         <!-- Shake Egg activity -->
         <activity
             android:name=".ShakeEggActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="false" /> <!-- Internal activity -->
 
     </application>
