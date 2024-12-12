@@ -84,7 +84,6 @@ public class GameActivity extends AppCompatActivity {
         // Determine game mode
         isTimed = getIntent().getBooleanExtra("isTimed", false);
 
-
         // Timer setup
         if (isTimed) {
             startTimer();
@@ -92,10 +91,8 @@ public class GameActivity extends AppCompatActivity {
             timerView.setVisibility(View.GONE); // Hide timer in non-timed mode
         }
 
+
         // Initialize word list and guessed letters
-
-
-
         startNewGame();
 
         updateUI();
@@ -309,6 +306,11 @@ public class GameActivity extends AppCompatActivity {
 
         updateDisplayedWord(); // Ensure the displayed word is updated
         updateGuessedLetters();
+
+        remainingTime =  60000;
+        timerDuration =  60000;
+
+
     }
 
     private void updateGuessedLetters() {
