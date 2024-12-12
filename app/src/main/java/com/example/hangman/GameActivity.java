@@ -96,10 +96,11 @@ public class GameActivity extends AppCompatActivity {
         }
 
 
-        // Initialize word list and guessed letters
+
         startNewGame();
 
         updateUI();
+
 
         // Back to Main Button
         ImageButton btnBackToMain = findViewById(R.id.btnBackToMain);
@@ -284,7 +285,10 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void startNewGame() {
-        // Pick a random word
+
+
+        remainingTime =  60000;
+        timerDuration =  60000;
 
         initializeWordList();
         guessedLetters = new HashSet<>();
@@ -310,9 +314,7 @@ public class GameActivity extends AppCompatActivity {
 
         updateDisplayedWord(); // Ensure the displayed word is updated
         updateGuessedLetters();
-
-        remainingTime =  60000;
-        timerDuration =  60000;
+        updateUI();
 
 
     }
